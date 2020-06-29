@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.mapper.PowerDao">
+
+	<select id="getPowerList" resultType="TreeNode">
+
+		SELECT * FROM tb_powers
+		WHERE id IN (SELECT DISTINCT power_id FROM tb_role_powers WHERE
+		role_id IN(SELECT role_id FROM tb_user_roles WHERE user_id=(SELECT id
+		FROM tb_users WHERE id=#{userId}))
+		)
+	</select>
+
+	<select id="getAllPowerList" resultType="TreeNode">
+		SELECT * FROM tb_powers
+	</select>
+
+
+	<select id="getFatherPowerId" resultType="Integer">
+		SELECT id from tb_powers where id= (SELECT parentid from tb_powers WHERE id =#{id} )
+	</select>
+
+	<delete id="deleteRolePower">
+	    delete from tb_role_powers where role_id=#{id}
+	</delete>
+
+	<insert id="insertRolePower">
+	    insert into tb_role_powers(role_id,power_id) values
+	    <foreach collection="param1" separator="," item="power">
+	        (#{param2},#{power})
+	    </foreach>
+	</insert>
+	<select id="getPowerIdsByUserId" resultType="Integer">
+	     select power_id from tb_role_powers where role_id=#{id} and power_id not in(select id from tb_powers WHERE parentid =0)
+	</select>
+</mapper>

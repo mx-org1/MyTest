@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>保存到localStroagetoken</title>
+    <script src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
+</head>
+<body>
+<span th:text="${token}"></span>
+
+</body>
+<script th:inline="javascript">
+	var token=[[${token}]];
+	//localStorage.setItem('token', JSON.stringify(token));
+	localStorage.setItem('token', JSON.stringify({
+	      token : token, //保存token
+	      name : 'mx' //保存 用户名
+	    })
+	    );
+
+	 //清除localStorage
+    //localStorage.removeItem('token');
+	var storageToken=localStorage.getItem('token');
+	 $.ajax({
+         type: 'post',
+         headers: {
+             'Access-Token':storageToken
+         },
+         url: '/getTokenFromStorage',
+         data: {name:'mx'},
+         success: function(data) {
+         },
+         error: function(err) {
+         },
+         complete: function(XMLHttpRequest, status) { //请求完成后最终执行参数　
+         	console.log(XMLHttpRequest);
+         	console.log(status);
+         }
+});
+</script>
+</html>

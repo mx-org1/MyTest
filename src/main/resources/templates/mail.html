@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>邮件发送</title>
+</head>
+<body>
+	<form action="/send"  method="post" enctype="multipart/form-data">
+        <table >
+            <tr>
+                <td>收件人</td>
+                <td><input type="text" name="addressee" size="50"> </td>
+            </tr>
+            <tr>
+                <td>主题</td>
+                <td><input type="text" name="title" size="50"> </td>
+            </tr>
+            <tr>
+                <td>添加附件</td>
+                <td><input type="file" name="file" size="50" accept=".doc"> </td>
+            </tr>
+            <tr>
+                <td>正文</td>
+                <td><textarea type="text" name="context" > </textarea></td>
+            </tr>
+            <tr>
+                <td ><input type="submit" value="发送"  ></td>
+            </tr>
+        </table>
+    </form>
+</body>
+</html>

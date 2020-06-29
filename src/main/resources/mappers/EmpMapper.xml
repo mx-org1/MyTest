@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.mapper.EmpDao">
+
+	<select id="getCount11" resultType="java.lang.Integer">
+
+		select count(*) from emp
+	</select>
+
+	<select id="getList" resultType="map">
+
+		select * from emp
+	</select>
+	<!-- 一个参数判断是否为空 -->
+	<select id="getEmpList" resultType="empNew" parameterType="String">
+		select * from emp where 1=1
+		<if test="_parameter!=null and _parameter !=''">
+			and emp_name like #{input}
+		</if>
+	</select>
+
+	<insert id="batchInsert" parameterType="java.util.List"
+		useGeneratedKeys="true">
+		insert into emp values
+		<foreach collection="list" separator="," item="emp"
+			index="index">
+			(null,#{emp.emp_name},#{emp.dept_id})
+		</foreach>
+	</insert>
+
+	<update id="batchUpdate" parameterType="emp">
+		<foreach collection="list" item="emp" separator=";">
+			update emp
+			<set>
+				<if test="emp.emp_name">
+					Emp_name=#{emp.emp_name},
+				</if>
+				<if test="emp.dept_id">
+					Dept_id=#{emp.dept_id}
+				</if>
+			</set>
+			<where>
+				<if test="emp.id!=null">
+					id=#{emp.id}
+				</if>
+			</where>
+		</foreach>
+	</update>
+
+	<insert id="addEmp">
+		insert into emp(emp_name,dept_id) values(#{param1},#{param2})
+	</insert>
+	<update id="updateEmp">
+		update emp
+		<set>
+		    <!-- 这里不加逗号还报错 -->
+		    <if test="param2 !=null and param2 !=''">
+		        emp_name=#{param2},
+		    </if>
+		     <if test="param3 !=null and param3 !=''">
+		        dept_id=#{param3},
+		    </if>
+		</set>
+		 where id =#{param1}
+	</update>
+	<delete id="deleteEmp">
+		delete from emp where id =#{param1}
+	</delete>
+
+	<delete id="batchDeleteEmp">
+
+		delete from emp where id in
+		<foreach collection="list" item="id" open="(" close=")"
+			separator=",">
+			#{id}
+		</foreach>
+	</delete>
+</mapper>

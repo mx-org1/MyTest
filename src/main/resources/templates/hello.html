@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head> <meta charset="UTF-8">
+<title>登录首页</title>
+<link rel="icon" href="https://markzz.oss-cn-shanghai.aliyuncs.com/test/2019-09-27/96953a4797f64447890f9d7abb236af8-%E5%9B%BE1.jpg">
+<script src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
+</head>
+<body>
+登录
+<h1 >hello world~~~~~~~~~~</h1>
+	<form >
+	账号：<input type="text" name="username"/>
+	密码：<input type="password" name="password"/>
+	<input  value="提交" type="button" onClick="aa()"/>
+	</form>
+	<script type="text/javascript">
+		var redirectUrl="[[${redirectUrl}]]"
+		//var username="[[${session.username}]]"
+		/* 这里真实的逻辑是到后台查询账号，密码对不对，对的话根据返回值判读，然后跳转 */
+		function aa(){
+			$.ajax({
+				//url:"/login/fangSession",
+				url:"/login/toLogin",
+				data:{username:"mx"},
+				async:true,//请求是否异步，默认为异步，这也是ajax重要特性
+				dataType:"text",   //返回格式为text,写json进error了，返回对象用json，因为json要求是标准json格式的
+				type:"GET",
+				 beforeSend:function(){
+					         //请求前的处理
+					     },
+					     success:function(req){
+						 alert("success");
+					         //请求成功时处理
+								 if(redirectUrl){
+									 location.href=redirectUrl;
+								 }
+					     },
+					     complete:function(){
+					         //请求完成的处理
+					     },
+					     error:function(){
+					         //请求出错处理
+					 alert("error");
+					     }
+			});
+		}
+
+		/* if(redirectUrl&&username){
+			 location.href=redirectUrl;
+		} */
+	</script>
+</body>
+</html>
